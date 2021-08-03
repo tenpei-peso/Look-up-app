@@ -1,0 +1,95 @@
+import React from 'react';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import TextField from '@material-ui/core/TextField';
+import { signUp } from '../reducks/users/operations';
+import { useDispatch } from 'react-redux';
+import { Button } from '@material-ui/core';
+
+const validationSchema = yup.object({
+    username: yup
+        .string('名前を入力してください')
+        .required('名前が必要です'),
+    email: yup
+        .string('Enter your email')
+        .email('Enter a valid email')
+        .required('Email is required'),
+    password: yup
+        .string('Enter your password')
+        .min(8, 'Password should be of minimum 8 characters length')
+        .required('Password is required'),
+    confirmPassword: yup
+        .string('Enter your password')
+        .min(8, 'Password should be of minimum 8 characters length')
+        .required('Password is required')
+});
+
+const SignIn = () => {
+    const dispatch = useDispatch();
+    const formik = useFormik({
+        initialValues: {
+            username: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+    },
+      validationSchema: validationSchema,
+      onSubmit: (values) => {
+        dispatch(signUp(values.username, values.email, values.password, values.confirmPassword))
+      },
+    });
+  
+    return (
+        <div className="c-section-container">
+            <h2 className="u-text__headline u-text-center">登録</h2>
+            <div className="module-spacer--small"></div>
+                <form onSubmit={formik.handleSubmit}>
+                    <TextField
+                        fullWidth={true}
+                        id="username"
+                        name="username"
+                        label="Username"
+                        value={formik.values.username}
+                        onChange={formik.handleChange}
+                        error={formik.touched.username && Boolean(formik.errors.username)}
+                        helperText={formik.touched.username && formik.errors.username}
+                    />
+                    <TextField
+                        fullWidth={true}
+                        id="email1"
+                        name="email"
+                        label="Email"
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
+                        error={formik.touched.email && Boolean(formik.errors.email)}
+                        helperText={formik.touched.email && formik.errors.email}
+                    />
+                    <TextField
+                        fullWidth={true}
+                        id="password1"
+                        name="password"
+                        label="Password"
+                        type="password"
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        error={formik.touched.password && Boolean(formik.errors.password)}
+                        helperText={formik.touched.password && formik.errors.password}
+                    />
+                    <TextField
+                        fullWidth={true}
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        label="ConfirmPassword"
+                        type="confirmPassword"
+                        value={formik.values.confirmPassword}
+                        onChange={formik.handleChange}
+                        error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
+                        helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+                    />
+                <div className="module-spacer--small"></div>
+                <Button variant="contained" color="primary" fullWidth type="submit">登録</Button>
+                </form>
+        </div>
+    );
+};
+export default SignIn
