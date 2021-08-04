@@ -8,7 +8,8 @@ const initialState = {
         role: "",
         isSignedIn: false,
         uid: "",
-        username: ""
+        username: "",
+        locate: ""
     },
 };
 

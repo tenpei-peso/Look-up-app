@@ -37,7 +37,9 @@ const HeaderMenu = ({handleDrawerToggle}) => {
                             break;
                     }
                 })
-                dispatch(fetchProductsInWish(UsersWish))
+                if(UsersWish.length > 0) {
+                    dispatch(fetchProductsInWish(UsersWish))
+                }
             })
             return () => unsubscribe()
     },[])
@@ -45,7 +47,7 @@ const HeaderMenu = ({handleDrawerToggle}) => {
     return (
         <>
             <IconButton onClick ={() => dispatch(push('/wish'))}>
-                <Badge badgeContent={UsersWish.length} color="secondary">
+                <Badge badgeContent={UsersWish && UsersWish.length} color="secondary">
                     <FavoriteBorderIcon />
                 </Badge>
             </IconButton>

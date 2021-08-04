@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import TextField from '@material-ui/core/TextField';
 import { signUp } from '../reducks/users/operations';
 import { useDispatch } from 'react-redux';
 import { Button } from '@material-ui/core';
+import AutoComplete from '../components/UIkit/AutoComplete';
 
 const validationSchema = yup.object({
     username: yup
@@ -17,25 +18,22 @@ const validationSchema = yup.object({
     password: yup
         .string('Enter your password')
         .min(8, 'Password should be of minimum 8 characters length')
-        .required('Password is required'),
-    confirmPassword: yup
-        .string('Enter your password')
-        .min(8, 'Password should be of minimum 8 characters length')
         .required('Password is required')
 });
 
-const SignIn = () => {
+const SignUp = () => {
+    const [locate, setLocate] = useState('');
     const dispatch = useDispatch();
     const formik = useFormik({
         initialValues: {
             username: '',
             email: '',
-            password: '',
-            confirmPassword: '',
+            password: ''
+            
     },
       validationSchema: validationSchema,
       onSubmit: (values) => {
-        dispatch(signUp(values.username, values.email, values.password, values.confirmPassword))
+        dispatch(signUp(values.username, values.email, values.password, locate))
       },
     });
   
@@ -43,6 +41,7 @@ const SignIn = () => {
         <div className="c-section-container">
             <h2 className="u-text__headline u-text-center">登録</h2>
             <div className="module-spacer--small"></div>
+            <AutoComplete setLocate={setLocate}></AutoComplete>
                 <form onSubmit={formik.handleSubmit}>
                     <TextField
                         fullWidth={true}
@@ -75,21 +74,10 @@ const SignIn = () => {
                         error={formik.touched.password && Boolean(formik.errors.password)}
                         helperText={formik.touched.password && formik.errors.password}
                     />
-                    <TextField
-                        fullWidth={true}
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        label="ConfirmPassword"
-                        type="confirmPassword"
-                        value={formik.values.confirmPassword}
-                        onChange={formik.handleChange}
-                        error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
-                        helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
-                    />
                 <div className="module-spacer--small"></div>
                 <Button variant="contained" color="primary" fullWidth type="submit">登録</Button>
                 </form>
         </div>
     );
 };
-export default SignIn
+export default SignUp

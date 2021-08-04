@@ -88,13 +88,8 @@ export const signIn = (email, password) => {
     }
 }
 
-export const signUp = (username, email, password, confirmPassword) => {
+export const signUp = (username, email, password, locate) => {
     return async (dispatch) => {
-        // Validation
-        if (password !== confirmPassword) {
-            alert("パスワードが一致しません")
-            return false
-        }
 
         return auth.createUserWithEmailAndPassword(email, password)
             .then(result => {
@@ -110,7 +105,8 @@ export const signUp = (username, email, password, confirmPassword) => {
                         role: "customer",
                         uid: uid,
                         updated_at: timestamp,
-                        username: username
+                        username: username,
+                        locate: locate
                     }
 
                     db.collection('users').doc(uid).set(userInitialData)
