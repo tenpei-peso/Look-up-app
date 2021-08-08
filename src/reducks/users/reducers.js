@@ -8,11 +8,16 @@ export const UsersReducer = (state = initialState.users, action) => {
                 ...state,
                 wish: [...action.payload]
             };
-        case Actions.FETCH_PRODUCTS_IN_PRODUCT:
+        case Actions.FETCH_USER_PRODUCTS:
             return {
                 ...state,
                 product: [...action.payload]
-            };
+            }
+        case Actions.DELETE_USER_PRODUCTS:
+            return {
+                ...state,
+                product: [...action.payload]
+            }
         case Actions.SIGN_IN:
             return {
                 ...state,

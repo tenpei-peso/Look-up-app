@@ -7,7 +7,8 @@ export const signInAction = (userState) => { /**この関数の引数は今は�
             isSignedIn: true,
             role: userState.role,
             uid: userState.uid,
-            username: userState.username
+            username: userState.username,
+            locate: userState.locate
         }
     }
 };
@@ -20,7 +21,7 @@ export const signOutAction = () => {
             isSignedIn: false,
             role: "",
             uid: "",
-            username: ""
+            username: "",
         }
     }
 };
@@ -33,10 +34,18 @@ export const fetchProductsInWishAction = (products) => {
     }
 }
 
-export const FETCH_PRODUCTS_IN_PRODUCT = "FETCH_PRODUCTS_IN_PRODUCT";
-export const fetchProductsInProductAction = (products) => {
+export const FETCH_USER_PRODUCTS = "FETCH_USER_PRODUCTS";
+export const fetchUserProductsAction = (products) => {
     return {
-        type: "FETCH_PRODUCTS_IN_PRODUCT",
+        type: "FETCH_USER_PRODUCTS",
+        payload: products
+    }
+}
+
+export const DELETE_USER_PRODUCTS = "DELETE_USER_PRODUCTS";
+export const deleteUserProductsAction = (products) => {
+    return {
+        type: "DELETE_USER_PRODUCTS",
         payload: products
     }
 }

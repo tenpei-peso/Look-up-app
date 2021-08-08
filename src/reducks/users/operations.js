@@ -1,4 +1,4 @@
-import {fetchProductsInProductAction, fetchProductsInWishAction, signInAction, signOutAction} from './actions';
+import { fetchProductsInWishAction, signInAction, signOutAction} from './actions';
 import { push } from 'connected-react-router';
 import {auth, db, FirebaseTimestamp} from '../../firebase/index'
 
@@ -18,9 +18,19 @@ export const fetchProductsInWish = (products) => {
     }
 }
 
-export const fetchProductsInProduct = (products) => {
-    return async (dispatch) => {
-        dispatch(fetchProductsInProductAction(products))
+export const fetchUsersData = () => {   /**map画面飛んだ時にmapコレクションにデータ入れる */
+    return async (dispatch, getState) => {
+        const users = getState().users
+        const mapData = {
+            uid: users.uid,
+            locate: users.locate,
+            products: users.product,
+            name: users.username
+        }
+        if(users.product.length > 0) {
+            db.collection('maps').doc(users.uid).set(mapData)
+        }
+
     }
 }
 
@@ -30,18 +40,17 @@ export const listenAuthState = () => {
             if (user) {
                 const uid = user.uid
 
-                    db.collection('users').doc(uid).get()
-                        .then(snapshot => {
-                            const data = snapshot.data()
-
-                            dispatch(signInAction({
-                                isSignedIn: true,
-                                role: data.role,
-                                uid: uid,
-                                username: data.username
-                            }))
-
-                        })
+                db.collection('users').doc(uid).get()
+                .then(snapshot => {
+                    const data = snapshot.data()
+                        dispatch(signInAction({
+                            isSignedIn: true,
+                            role: data.role,
+                            uid: uid,
+                            username: data.username,
+                            locate: data.locate
+                        }))
+                })
             } else {
                 dispatch(push('/signin'))
             }
@@ -63,6 +72,7 @@ export const resetPassword = (email) => {
 
 export const signIn = (email, password) => {
     return async (dispatch) => {
+
         auth.signInWithEmailAndPassword(email, password)
             .then(result => {
                 const user = result.user
@@ -73,16 +83,16 @@ export const signIn = (email, password) => {
                     db.collection('users').doc(uid).get()
                         .then(snapshot => {
                             const data = snapshot.data()
-
-                            dispatch(signInAction({
-                                isSignedIn: true,
-                                role: data.role,
-                                uid: uid,
-                                username: data.username
-                            }))
-
-                            dispatch(push('/'))
-                        })
+                                dispatch(signInAction({
+                                    isSignedIn: true,
+                                    role: data.role,
+                                    uid: uid,
+                                    username: data.username,
+                                    locate: data.locate
+                                }))
+    
+                                dispatch(push('/'))
+                            })
                 }
             }).catch(err => alert(err))
     }

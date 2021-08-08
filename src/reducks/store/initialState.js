@@ -11,6 +11,9 @@ const initialState = {
         username: "",
         locate: ""
     },
+    maps: {
+        map: []
+    }
 };
 
 export default initialState

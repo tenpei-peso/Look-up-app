@@ -51,13 +51,14 @@ function ProductDetail() {
     const classes = useStyles()
     const dispatch = useDispatch()
     const selector = useSelector(state => state)
+    const uid = selector.users.uid
     const path = selector.router.location.pathname;
     const id = path.split('/product/')[1];
 
     const [product, setProduct] = useState(null);
 
     useEffect(() => {
-        db.collection('products').doc(id).get()
+        db.collection('users').doc(uid).collection('userProducts').doc(id).get()
             .then(doc => {
                 const data = doc.data();
                 setProduct(data)

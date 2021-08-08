@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useCallback} from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {PrimaryButton, TextInput} from '../components/UIkit'
 import { SelectBox } from '../components/UIkit';
 import { saveProduct } from '../reducks/products/operations';
@@ -8,6 +8,7 @@ import { db } from '../firebase';
 
 const ProductEdit = () => {
     const dispatch = useDispatch();
+    const uid = useSelector(state => state.users.uid)
     let id = window.location.pathname.split('/product/edit')[1];
     if (id) {
         id = id.split('/')[1]
@@ -38,7 +39,6 @@ const ProductEdit = () => {
           [description, setDescription] = useState(""),
           [images, setImages] = useState([]),
           [category, setCategory] = useState(""),
-        //   [categories, setCategories] = useState([]),
           [gender, setGender] = useState(""),
           [price, setPrice] = useState(""),
           [size, setSize] = useState([]);
@@ -57,7 +57,7 @@ const ProductEdit = () => {
 
     useEffect(() => {
         if (id) {
-            db.collection('products').doc(id).get().then(snapshot => {
+            db.collection('users').doc(uid).collection('userProducts').doc(id).get().then(snapshot => {
                 const product = snapshot.data()
                 setName(product.name)
                 setDescription(product.description)

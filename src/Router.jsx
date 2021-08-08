@@ -2,6 +2,7 @@ import React from 'react';
 import {Switch, Route} from "react-router";
 import {SignIn, SignUp, Reset, ProductEdit, ProductList, ProductDetail, WishList, Home} from "./templates"
 import Auth from './Auth'
+import Map from './templates/Map';
 
 const Router = () => {
     return (
@@ -17,6 +18,7 @@ const Router = () => {
                 <Route path="/product/edit(/:id)?" component={ProductEdit}></Route>
                 
                 <Route exact path="/wish" component={WishList}></Route>
+                <Route exact path="/map" component={Map}></Route>
             </Auth>
             
         </Switch>

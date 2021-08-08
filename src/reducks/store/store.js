@@ -8,6 +8,7 @@ import {connectRouter, routerMiddleware} from "connected-react-router"
 import thunk from 'redux-thunk';
 import {UsersReducer} from "../users/reducers";
 import {ProductsReducer} from "../products/reducers";
+import { MapsReducer } from "../maps/reducers";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -16,7 +17,8 @@ export default function createStore(history) {
         combineReducers({
             router: connectRouter(history),
             users: UsersReducer,
-            products: ProductsReducer
+            products: ProductsReducer,
+            maps: MapsReducer
         }), composeEnhancers(applyMiddleware(
             routerMiddleware(history),
             thunk

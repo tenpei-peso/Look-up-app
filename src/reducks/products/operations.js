@@ -1,39 +1,42 @@
 import { push } from "connected-react-router"
 import { db, FirebaseTimestamp } from "../../firebase"
-import { fetchProductsInProduct } from "../users/operations";
-import { fetchProductsAction, deleteProductAction } from "./actions"
+import { deleteUserProductsAction, fetchUserProductsAction } from "../users/actions";
+import {fetchUsersData } from '../maps/operations'
 
-const productsRef = db.collection('products');
+const userProductsRef = db.collection('users');
 
 export const deleteProduct = (id) => {
     return async (dispatch, getState) => {
-        productsRef.doc(id).delete()
+        const uid = getState().users.uid
+        userProductsRef.doc(uid).collection('userProducts').doc(id).delete()
             .then(() => {
-                const prevProducts = getState().products.list;
+                const prevProducts = getState().users.product;
                 const nextProducts = prevProducts.filter(product => product.id !== id)
-                dispatch(deleteProductAction(nextProducts))
+                dispatch(deleteUserProductsAction(nextProducts))
             })
     }
 }
 
 export const fetchProducts = () => {
-    return async (dispatch) => {
-        productsRef.orderBy('updated_at', 'desc').get()
+    return async (dispatch, getState) => {
+        const uid = getState().users.uid;
+        userProductsRef.doc(uid).collection('userProducts').orderBy('updated_at', 'desc').get()
             .then(snapshots => {
                 const productList = []
                 snapshots.forEach(snapshot => {
                     const product = snapshot.data()
                     productList.push(product)
                 })
-                dispatch(fetchProductsAction(productList))
-                dispatch(fetchProductsInProduct(productList))
+                dispatch(fetchUserProductsAction(productList)) /**reduxのusersの中にproductの配列入れる */
+                dispatch(fetchUsersData()) /**mapコレクションに情報追加 */
             })
     }
 }
 
 export const saveProduct = (id, name, description, category, gender, size, price, images) => {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
         const timestamp = FirebaseTimestamp.now()
+        const uid = getState().users.uid;
 
         const data = {
             category: category,
@@ -46,9 +49,9 @@ export const saveProduct = (id, name, description, category, gender, size, price
             updated_at: timestamp
             
         }
-
+        
         if (!id) {
-            const ref = productsRef.doc()
+            const ref = userProductsRef.doc(uid).collection('userProducts').doc()
             data.created_at = timestamp
             id = ref.id
             data.id = id
@@ -58,7 +61,7 @@ export const saveProduct = (id, name, description, category, gender, size, price
         }
         
 
-        return productsRef.doc(id).set(data, {marge: true})
+        return userProductsRef.doc(uid).collection('userProducts').doc(id).set(data, {marge: true})
             .then(() => {
                 dispatch(push('/'))
             }).catch((error) => {
