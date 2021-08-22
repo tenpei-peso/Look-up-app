@@ -50,20 +50,19 @@ const returnCodeToBr = (text) => {
 function ProductDetail() {
     const classes = useStyles()
     const dispatch = useDispatch()
-    const selector = useSelector(state => state)
-    const uid = selector.users.uid
-    const path = selector.router.location.pathname;
-    const id = path.split('/product/')[1];
-
+    const path = useSelector(state => state.router.location.pathname)
+    const uid = path.split('/')[2];
+    const id = path.split('/')[3];
+    
     const [product, setProduct] = useState(null);
-
+    
     useEffect(() => {
-        db.collection('users').doc(uid).collection('userProducts').doc(id).get()
-            .then(doc => {
-                const data = doc.data();
-                setProduct(data)
-            })
-    },[])
+        db.collection('maps').doc(uid).get().then(snapshot => {
+            const data = snapshot.data()
+            const filterData = data.products.filter(value => value.id === id)
+            setProduct(...filterData)
+        })
+    }, [])
 
     const addProduct = useCallback((selectedSize) => {
         const timestamp = FirebaseTimestamp.now();
@@ -92,7 +91,7 @@ function ProductDetail() {
                         <div className="module-spacer--small"/>
                         <SizeTable size={product.size} addProduct={addProduct}></SizeTable>
                         <div className="module-spacer--small"/>
-                        <p>{returnCodeToBr(product.description)}</p>
+                        <p>{product.description}</p>
                     </div>
                 </div>
             )}

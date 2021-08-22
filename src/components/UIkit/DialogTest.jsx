@@ -4,18 +4,18 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Slide from '@material-ui/core/Slide';
 import DialogImage from '../Products/DialogImage';
 import { Button, DialogActions, DialogTitle } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import { push } from 'connected-react-router';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function DialogTest({open, handleClose, selected}) {
+  const dispatch = useDispatch();
 
   return (
     <div>
-      {/* <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Slide in alert dialog
-      </Button> */}
       <Dialog
         open={open}
         TransitionComponent={Transition}
@@ -32,8 +32,8 @@ export default function DialogTest({open, handleClose, selected}) {
           />
         </DialogContent>
         <DialogActions>
-          <Button color="primary">
-            Agree
+          <Button color="primary" fullWidth='true' onClick={() => dispatch(push('/shopPage/' + selected.uid))}>
+            お店の詳細ページへ
           </Button>
         </DialogActions>
       </Dialog>

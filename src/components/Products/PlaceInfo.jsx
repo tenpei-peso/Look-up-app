@@ -1,13 +1,15 @@
-import { Marker } from '@react-google-maps/api';
+import { InfoWindow, Marker } from '@react-google-maps/api';
+import { push } from 'connected-react-router';
 import React, { useState } from 'react'
 import { useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import DialogTest from '../UIkit/DialogTest';
 
 
 function PlaceInfo() {
     const [selected, setSelected] = useState(null);
     const [open, setOpen] = useState(false);
+    const dispatch = useDispatch()
 
     const mapsData = useSelector(state => state.maps.map)
 

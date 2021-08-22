@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core';
 import React from 'react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,6 +17,9 @@ function ProductList(){
 
     return (
         <section className="c-section-wrapin">
+            <Typography variant="h3" component="h3" style={{marginBottom: '28px', color: '#4dd0e1'}}>
+                在庫情報
+            </Typography>
             <div className="p-grid__row">
                 {products.length > 0 && (products.map(product => (
                     <ProductCard 

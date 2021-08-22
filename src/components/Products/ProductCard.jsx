@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function ProductCard({image, name, price, id}) {
+export default function ProductCard({image, name, price, id, uid}) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null)
@@ -67,7 +67,7 @@ export default function ProductCard({image, name, price, id}) {
         <CardMedia
           className={classes.media}
           image={images[0].path}
-          onClick={() => dispatch(push('/product/' + id))}
+          onClick={() => uid && dispatch(push(`/product/${uid}/${id}`))}
         />
         <CardContent className={classes.content}>
           <div>
@@ -92,10 +92,16 @@ export default function ProductCard({image, name, price, id}) {
             onClose={handleClose}
           >
               <MenuItem onClick={() => {
-                  dispatch(push('/product/edit/' + id))
+                  dispatch(push('/edit/' + id))
                   handleClose()
               }}>
                 編集する
+              </MenuItem>
+              <MenuItem onClick={() => {
+                  dispatch(push('/sell/' + id))
+                  handleClose()
+              }}>
+                売り上げ登録
               </MenuItem>
               <MenuItem onClick={() => {
                   dispatch(deleteProduct(id))
