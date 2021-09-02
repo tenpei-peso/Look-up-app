@@ -5,6 +5,7 @@ import Auth from './Auth'
 import Map from './templates/Map';
 import ShopPage from './templates/ShopPage';
 import ProductSell from './templates/ProductSell';
+import SellHistory from './templates/SellHistory';
 
 const Router = () => {
     return (
@@ -18,6 +19,7 @@ const Router = () => {
                 <Route exact path="/product/:id/:id" component={ProductDetail}></Route>
                 <Route path="/edit(/:id)?" component={ProductEdit}></Route>
                 <Route path="/sell/:id" component={ProductSell}></Route>
+                <Route exact path="/history" component={SellHistory}></Route>
 
                 <Route exact path="/shopPage/:id" component={ShopPage}></Route>
 

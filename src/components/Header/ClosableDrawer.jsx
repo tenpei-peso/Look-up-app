@@ -52,7 +52,7 @@ function ClosableDrawer({container, open, onClose}) {
 
     const menus = [
         {func: selectMenu, label: "商品登録",    icon: <AddCircleIcon/>, id: "register", value: "/edit"},
-        {func: selectMenu, label: "注文履歴",    icon: <HistoryIcon/>,   id: "history",  value: "/order/history"},
+        {func: selectMenu, label: "注文履歴",    icon: <HistoryIcon/>,   id: "history",  value: "/history"},
         {func: selectMenu, label: "プロフィール", icon: <PersonIcon/>,    id: "profile",  value: "/user/mypage"},
         {func: selectMenu, label: "マップ", icon: <PersonIcon/>,    id: "map",  value: "/map"},
     ];

@@ -3,7 +3,6 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ProductCard from '../components/Products/ProductCard';
-import { fetchMaps } from '../reducks/maps/operations';
 import { fetchProducts } from '../reducks/products/operations'
 
 function ProductList(){
@@ -12,7 +11,6 @@ function ProductList(){
 
     useEffect(() => {
         dispatch(fetchProducts())
-        dispatch(fetchMaps())
     }, [])
 
     return (

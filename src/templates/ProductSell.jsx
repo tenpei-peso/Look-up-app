@@ -14,19 +14,23 @@ function ProductSell() {
     let edit = window.location.pathname.split('edit/')[1];
 
     const categories = [
-        {id: "tops", name: "トップス"},
-        {id: "shirts", name: "シャツ"},
-        {id: "pants", name: "パンツ"}
+        {id: "トップス", name: "トップス"},
+        {id: "ジャケット/アウター", name: "ジャケット/アウター"},
+        {id: "パンツ", name: "パンツ"},
+        {id: "スカート", name: "スカート"},
+        {id: "ワンピース/ドレス", name: "ワンピース/ドレス"},
+        {id: "シューズ", name: "シューズ"},
+        {id: "アクセサリー", name: "アクセサリー"},
     ]
 
     const genders = [
-        {id: "all", name: "すべて"},
-        {id: "male", name: "メンズ"},
-        {id: "female", name: "レディース"}
+        {id: "男性", name: "メンズ"},
+        {id: "女性", name: "レディース"}
     ];
 
     const sizes = [
-        {id: "FLEE", name: "フリーサイズ"},
+        {id: "FREE", name: "FREE"},
+        {id: "XS", name: "XS"},
         {id: "S", name: "S"},
         {id: "M", name: "M"},
         {id: "L", name: "L"},
